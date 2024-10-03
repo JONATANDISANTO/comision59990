@@ -23,8 +23,8 @@ const APORTES = {
     obraSocial: 0.03,
     sindicato: 0.02
 };
-let periodo = "Septiembre/2024"
-let diasDeTrabajo = 21
+let periodo = "Septiembre/2024";
+let diasDeTrabajo = 21;
 let seleccionaCategoria = prompt("Ingresa una categoría (vendedor, cocinero, administrativo, directivo)");
 
 let sueldoBasico;
@@ -49,9 +49,8 @@ switch (seleccionaCategoria.toLowerCase()) {
 if (sueldoBasico) {
   console.log("Tu Sueldo Basico es de:" + "$" + sueldoBasico);
 }
-  
 
-  let añosAntiguedad = parseInt(prompt("Ingresa antigüedad basada en años de 0 a 40"), 10);
+let añosAntiguedad = parseInt(prompt("Ingresa antigüedad basada en años de 0 a 40"), 10);
 
 if (isNaN(añosAntiguedad)) {
     console.log("Por favor, ingresa un número válido.");
@@ -61,40 +60,43 @@ if (isNaN(añosAntiguedad)) {
     console.log("Años de antigüedad ingresados: " + añosAntiguedad);
 }
 
-    let calculoAntiguedad = (añosAntiguedad * ANTIGUEDAD * sueldoBasico)
-    console.log("Importe por Antiguedad:" + "$" + calculoAntiguedad);
+let calculoAntiguedad = (añosAntiguedad * ANTIGUEDAD * sueldoBasico);
+console.log("Importe por Antigüedad:" + "$" + calculoAntiguedad);
 
-    let diasTrabajados = parseInt(prompt("Ingresa los días que fuiste a trabajar"), 10);
+let diasTrabajados = parseInt(prompt("Ingresa los días que fuiste a trabajar"), 10);
 
-    if (isNaN(diasTrabajados)) {
-        console.log("Por favor, ingresa un número válido para los días trabajados.");
+if (isNaN(diasTrabajados)) {
+    console.log("Por favor, ingresa un número válido para los días trabajados.");
+} else {
+    let sueldoBruto; 
+
+    if (diasTrabajados < 21) {
+        sueldoBruto = sueldoBasico + calculoAntiguedad; 
+        console.log("Este mes perdiste el presentismo.");
     } else {
-        let sueldoBruto; // Definimos la variable sueldoBruto
+        sueldoBruto = (PRESENTISMO * sueldoBasico) + calculoAntiguedad + sueldoBasico; 
+        console.log("Este mes no perdiste el presentismo. Se te aplicará un beneficio del " + (PRESENTISMO * 100) + "%.");
     }
-        if (diasTrabajados < 21) {
-            sueldoBruto = sueldoBasico + calculoAntiguedad; // Sueldo sin presentismo
-            console.log("Este mes perdiste el presentismo.");
-        } else {
-            sueldoBruto = (PRESENTISMO * sueldoBasico) + calculoAntiguedad + sueldoBasico; // Sueldo con presentismo
-            console.log("Este mes no perdiste el presentismo. Se te aplicará un beneficio del " + (PRESENTISMO * 100) + "%.");
-        }
-    
-        console.log("Tu Sueldo Bruto a Cobrar en periodo:" +  periodo + "es de:" + "$" + sueldoBruto);
-  
+
+    console.log("Tu Sueldo Bruto a Cobrar en periodo:" +  periodo + " es de:" + "$" + sueldoBruto);
+
+ 
+    const sueldoNeto = calcularSueldoNeto(sueldoBruto);
+    console.log("Total Sueldo Neto a Cobrar es:" + "$" + sueldoNeto);
+}
+
+
+function calcularSueldoNeto(sueldoBruto) {
     let descuentoJubilacion = sueldoBruto * APORTES.jubilacion;
     let descuentoObraSocial = sueldoBruto * APORTES.obraSocial;
     let descuentoSindicato = sueldoBruto * APORTES.sindicato;
-    
-
-    
 
     console.log("Descuento Aporte Jubilatorio:" + "$" + descuentoJubilacion);
     console.log("Descuento Aporte Obra Social:" + "$" + descuentoObraSocial);
     console.log("Descuento Aporte Sindical:" + "$" + descuentoSindicato);
-    
-    let sueldoNeto = sueldoBruto - (descuentoJubilacion + descuentoObraSocial + descuentoSindicato);
-    console.log("Total Sueldo Neto a Cobrar en:" + "$" + sueldoNeto);
 
+    return sueldoBruto - (descuentoJubilacion + descuentoObraSocial + descuentoSindicato);
+}
 
 
 
