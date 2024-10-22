@@ -168,6 +168,26 @@ body {
     transition: 0.8s;
 }
 
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+th {
+    background-color: #f4f4f4;
+}
+.resumen {
+    margin-top: 20px;
+}
+.resumen td {
+    text-align: right;
+    font-weight: bold;
+}
+
 .h2-index {
     justify-content: center;
     text-align: center;
