@@ -148,17 +148,17 @@ function mostrarTablaRecibo(categoria, añosAntiguedad, diasTrabajados, sueldoBa
             <tr>
                 <td>Descuento Jubilación</td>
                 <td>11%</td>
-                <td>${(sueldoBruto * APORTES.jubilacion).toFixed(2)}</td>
+                <td> - ${(sueldoBruto * APORTES.jubilacion).toFixed(2)}</td>
             </tr>
             <tr>
                 <td>Descuento Obra Social</td>
                 <td>3%</td>
-                <td>${(sueldoBruto * APORTES.obraSocial).toFixed(2)}</td>
+                <td> - ${(sueldoBruto * APORTES.obraSocial).toFixed(2)}</td>
             </tr>
             <tr>
                 <td>Descuento Sindicato</td>
                 <td>2%</td>
-                <td>${(sueldoBruto * APORTES.sindicato).toFixed(2)}</td>
+                <td> - ${(sueldoBruto * APORTES.sindicato).toFixed(2)}</td>
             </tr>
         </tbody>
         <tfoot>
