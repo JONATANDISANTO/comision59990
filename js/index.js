@@ -17,6 +17,9 @@ de lunes a sabados, tambien se imprime en consola los siguientes valores:
 segun lo corregiodo la entrega anterior modifique el  switch y realice una busqueda utilizando arrays. interactue con el html de manera basica segun las ultimas clases para que luego de la consulta se genere una planilla en formato basico de recibo de sueldo.
 */
 
+/*corregimos lo indicado en la antrega anterior relacionado con intentosCategorias , manipulamos el DOM para generar la tabla del recibo de sueldo desde javascript, 
+eliminamos los "promp" por input y label,. guardamos informacion recopilada en el localstorage*/
+
 
 const ANTIGUEDAD = 0.01;
 const PRESENTISMO = 0.0833;
@@ -36,19 +39,52 @@ const categoriasSueldos = {
     directivo: 2000000
 };
 
-let empleados = [];
+let cantidadEmpleados = 0;
+let empleadosContados = 0;
 
-let cantidadEmpleados = parseInt(prompt("¿Cuántos empleados deseas calcular?"), 10);
+document.getElementById("iniciarCalculo").addEventListener("click", function() {
+    cantidadEmpleados = parseInt(document.getElementById("cantidadEmpleados").value, 10);
+    if (isNaN(cantidadEmpleados) || cantidadEmpleados < 1) {
+        alert("Por favor, ingresa una cantidad válida de empleados.");
+        return;
+    }
+    document.getElementById("cantidadEmpleadosSection").style.display = "none";
+    document.getElementById("formEmpleado").style.display = "block";
+});
 
-function agregarEmpleado(categoria, añosAntiguedad, diasTrabajados) {
-    let empleado = {
-        categoria: categoria,
-        añosAntiguedad: añosAntiguedad,
-        diasTrabajados: diasTrabajados,
-        sueldoBasico: categoriasSueldos[categoria] || 0
-    };
-    empleados.push(empleado);
-}
+document.getElementById("calcularSueldo").addEventListener("click", function() {
+    if (empleadosContados < cantidadEmpleados) {
+        const categoria = document.getElementById("categoria").value;
+        const añosAntiguedad = parseInt(document.getElementById("antiguedad").value, 10);
+        const diasTrabajados = parseInt(document.getElementById("diasTrabajados").value, 10);
+        
+        let sueldoBasico = categoriasSueldos[categoria];
+        let calculoAntiguedad = añosAntiguedad * ANTIGUEDAD * sueldoBasico;
+
+        let sueldoBruto = calcularSueldoBruto(sueldoBasico, calculoAntiguedad, diasTrabajados);
+        const sueldoNeto = calcularSueldoNeto(sueldoBruto);
+
+        const empleadoData = {
+            categoria,
+            añosAntiguedad,
+            diasTrabajados,
+            sueldoBasico,
+            calculoAntiguedad,
+            sueldoBruto,
+            sueldoNeto
+        };
+
+        sessionStorage.setItem(`empleado_${empleadosContados}`, JSON.stringify(empleadoData));
+        localStorage.setItem(`empleado_${empleadosContados}`, JSON.stringify(empleadoData));
+
+        mostrarTablaRecibo(categoria, añosAntiguedad, diasTrabajados, sueldoBasico, calculoAntiguedad, sueldoBruto, sueldoNeto);
+        empleadosContados++;
+
+        document.getElementById("formEmpleado").reset();
+    } else {
+        alert("Ya has calculado el sueldo para todos los empleados.");
+    }
+});
 
 function calcularSueldoBruto(sueldoBasico, calculoAntiguedad, diasTrabajados) {
     if (diasTrabajados < diasDeTrabajo) {
@@ -72,57 +108,70 @@ function calcularSueldoNeto(sueldoBruto) {
     return sueldoBruto - (descuentoJubilacion + descuentoObraSocial + descuentoSindicato);
 }
 
-for (let i = 0; i < cantidadEmpleados; i++) {
-    let intentosCategoria = 1;
-    let seleccionaCategoria;
-    
-    while (intentosCategoria <= 1) {
-        seleccionaCategoria = prompt("Ingresa una categoría (vendedor, cocinero, administrativo, directivo)").toLowerCase();
-        if (categoriasSueldos[seleccionaCategoria]) {
-            break;
-        }
-        intentosCategoria++;
-        if (intentosCategoria > 1) {
-            alert("No seleccionaste una categoría válida.");
-            continue;
-        }
-    }
-
-    let sueldoBasico = categoriasSueldos[seleccionaCategoria];
-    console.log("Tu Sueldo Básico es de: $" + sueldoBasico);
-
-    let intentosAntiguedad = 0;
-    let añosAntiguedad;
-    
-    while (intentosAntiguedad < 3) {
-        añosAntiguedad = parseInt(prompt("Ingresa antigüedad basada en años de 0 a 40"), 10);
-        if (!isNaN(añosAntiguedad) && añosAntiguedad <= 40) {
-            break;
-        }
-        intentosAntiguedad++;
-        console.log("Por favor, ingresa un número válido (0-40). Intentos restantes: " + (3 - intentosAntiguedad));
-        if (intentosAntiguedad === 3) continue;
-    }
-
-    let calculoAntiguedad = añosAntiguedad * ANTIGUEDAD * sueldoBasico;
-    console.log("Importe por Antigüedad: $" + calculoAntiguedad);
-
-    let diasTrabajados = parseInt(prompt("Ingresa los días que fuiste a trabajar"), 10);
-    agregarEmpleado(seleccionaCategoria, añosAntiguedad, diasTrabajados);
-
-    let sueldoBruto = calcularSueldoBruto(sueldoBasico, calculoAntiguedad, diasTrabajados);
-    console.log("Tu Sueldo Bruto a Cobrar en periodo " + periodo + " es de: $" + sueldoBruto);
-
-    const sueldoNeto = calcularSueldoNeto(sueldoBruto);
-    console.log("Total Sueldo Neto a Cobrar: $" + sueldoNeto);
+function mostrarTablaRecibo(categoria, añosAntiguedad, diasTrabajados, sueldoBasico, calculoAntiguedad, sueldoBruto, sueldoNeto) {
+    const tablaHTML = `
+    <h2> Recibo de sueldo periodo: Octubre/2024</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Concepto</th>
+                <th>Detalle</th>
+                <th>Importe</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Categoría</td>
+                <td>${categoria}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Sueldo Básico</td>
+                <td></td>
+                <td>${sueldoBasico}</td>
+            </tr>
+            <tr>
+                <td>Antigüedad</td>
+                <td>${añosAntiguedad} años</td>
+                <td>${calculoAntiguedad.toFixed(2)}</td>
+            </tr>
+            <tr>
+                <td>Presentismo</td>
+                <td>${diasTrabajados >= diasDeTrabajo ? "Aplicado" : "No Aplicado"}</td>
+                <td>${diasTrabajados >= diasDeTrabajo ? (PRESENTISMO * sueldoBasico).toFixed(2) : '0.00'}</td>
+            </tr>
+            <tr>
+                <td>Sueldo Bruto</td>
+                <td></td>
+                <td>${sueldoBruto.toFixed(2)}</td>
+            </tr>
+            <tr>
+                <td>Descuento Jubilación</td>
+                <td>11%</td>
+                <td>${(sueldoBruto * APORTES.jubilacion).toFixed(2)}</td>
+            </tr>
+            <tr>
+                <td>Descuento Obra Social</td>
+                <td>3%</td>
+                <td>${(sueldoBruto * APORTES.obraSocial).toFixed(2)}</td>
+            </tr>
+            <tr>
+                <td>Descuento Sindicato</td>
+                <td>2%</td>
+                <td>${(sueldoBruto * APORTES.sindicato).toFixed(2)}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr class="resumen">
+                <td colspan="2">Total Neto a Cobrar</td>
+                <td>${sueldoNeto.toFixed(2)}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <br>
+    `;
+    document.getElementById("tablaRecibo").innerHTML += tablaHTML; 
 }
-
-let empleadosConAntiguedad = empleados.filter(empleado => empleado.añosAntiguedad > 10);
-console.log("Empleados con más de 10 años de antigüedad:", empleadosConAntiguedad);
-
-
-
-
 
 
 
