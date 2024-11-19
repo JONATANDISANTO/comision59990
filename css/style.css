@@ -168,7 +168,7 @@ body {
     transition: 0.8s;
 }
 
-table {
+/*table {
     width: 100%;
     border-collapse: collapse;
 }
@@ -186,6 +186,42 @@ th {
 .resumen td {
     text-align: right;
     font-weight: bold;
+}
+*/
+
+table {
+    width: 80%; 
+    margin: 20px auto; 
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1; 
+    border: 1px solid #ccc; 
+}
+
+table th {
+    background-color: #4a90e2; 
+    color: white; 
+    padding: 10px;
+    font-weight: bold;
+    text-align: left;
+}
+
+
+table td {
+    padding: 8px;
+    border: 1px solid #ccc; 
+}
+
+
+table tfoot tr.resumen td {
+    font-weight: bold; 
+    font-size: 1.1rem; 
+    color: #333; 
+}
+
+table tfoot tr.resumen td:last-child {
+    text-align: right;
+    color: #2c3e50; 
 }
 
 .h2-index {
