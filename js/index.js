@@ -42,7 +42,7 @@ const categoriasSueldos = {
 let cantidadEmpleados = 0;
 let empleadosContados = 0;
 
-document.getElementById("iniciarCalculo").addEventListener("click", function() {
+document.getElementById("iniciarCalculo").addEventListener("click", function () {
     cantidadEmpleados = parseInt(document.getElementById("cantidadEmpleados").value, 10);
     if (isNaN(cantidadEmpleados) || cantidadEmpleados < 1) {
         alert("Por favor, ingresa una cantidad válida de empleados.");
@@ -52,12 +52,24 @@ document.getElementById("iniciarCalculo").addEventListener("click", function() {
     document.getElementById("formEmpleado").style.display = "block";
 });
 
-document.getElementById("calcularSueldo").addEventListener("click", function() {
+document.getElementById("calcularSueldo").addEventListener("click", function () {
     if (empleadosContados < cantidadEmpleados) {
         const categoria = document.getElementById("categoria").value;
         const añosAntiguedad = parseInt(document.getElementById("antiguedad").value, 10);
         const diasTrabajados = parseInt(document.getElementById("diasTrabajados").value, 10);
+
         
+        if (isNaN(añosAntiguedad) || añosAntiguedad < 0 || añosAntiguedad > 50) {
+            alert("Por favor, ingresa un valor válido para los años de antigüedad (0 a 50).");
+            return;
+        }
+
+     
+        if (isNaN(diasTrabajados) || diasTrabajados < 0 || diasTrabajados > diasDeTrabajo) {
+            alert(`Por favor, ingresa un valor válido para los días trabajados (0 a ${diasDeTrabajo}).`);
+            return;
+        }
+
         let sueldoBasico = categoriasSueldos[categoria];
         let calculoAntiguedad = añosAntiguedad * ANTIGUEDAD * sueldoBasico;
 
@@ -109,69 +121,76 @@ function calcularSueldoNeto(sueldoBruto) {
 }
 
 function mostrarTablaRecibo(categoria, añosAntiguedad, diasTrabajados, sueldoBasico, calculoAntiguedad, sueldoBruto, sueldoNeto) {
-    const tablaHTML = `
-    <h2> Recibo de sueldo periodo: Octubre/2024</h2>
-    <table border="1">
-        <thead>
+    const tablaHTML =
+        `<table>
             <tr>
-                <th>Concepto</th>
-                <th>Detalle</th>
-                <th>Importe</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Categoría</td>
-                <td>${categoria}</td>
-                <td></td>
+                <td colspan="3">
+                    <h2 class="periodoRecibo">Recibo de sueldo periodo: Octubre/2024</h2>
+                </td>
             </tr>
             <tr>
-                <td>Sueldo Básico</td>
-                <td></td>
-                <td>${sueldoBasico}</td>
+                <td><strong>Categoría:</strong> ${categoria}</td>
+                <td><strong>Antigüedad:</strong> ${añosAntiguedad} años</td>
+                <td><strong>Días Trabajados:</strong> ${diasTrabajados}</td>
             </tr>
-            <tr>
-                <td>Antigüedad</td>
-                <td>${añosAntiguedad} años</td>
-                <td>${calculoAntiguedad.toFixed(2)}</td>
-            </tr>
-            <tr>
-                <td>Presentismo</td>
-                <td>${diasTrabajados >= diasDeTrabajo ? "Aplicado" : "No Aplicado"}</td>
-                <td>${diasTrabajados >= diasDeTrabajo ? (PRESENTISMO * sueldoBasico).toFixed(2) : '0.00'}</td>
-            </tr>
-            <tr>
-                <td>Sueldo Bruto</td>
-                <td></td>
-                <td>${sueldoBruto.toFixed(2)}</td>
-            </tr>
-            <tr>
-                <td>Descuento Jubilación</td>
-                <td>11%</td>
-                <td> - ${(sueldoBruto * APORTES.jubilacion).toFixed(2)}</td>
-            </tr>
-            <tr>
-                <td>Descuento Obra Social</td>
-                <td>3%</td>
-                <td> - ${(sueldoBruto * APORTES.obraSocial).toFixed(2)}</td>
-            </tr>
-            <tr>
-                <td>Descuento Sindicato</td>
-                <td>2%</td>
-                <td> - ${(sueldoBruto * APORTES.sindicato).toFixed(2)}</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr class="resumen">
-                <td colspan="2">Total Neto a Cobrar</td>
-                <td>${sueldoNeto.toFixed(2)}</td>
-            </tr>
-        </tfoot>
-    </table>
-    <br>
-    `;
-    document.getElementById("tablaRecibo").innerHTML += tablaHTML; 
+        </table>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Detalle</th>
+                    <th>Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="sin negrita">Sueldo Básico</td>
+                    <td></td>
+                    <td>${sueldoBasico.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>Antigüedad</td>
+                    <td>${añosAntiguedad} años</td>
+                    <td>${calculoAntiguedad.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>Presentismo</td>
+                    <td>${diasTrabajados >= diasDeTrabajo ? "Aplicado" : "No Aplicado"}</td>
+                    <td>${diasTrabajados >= diasDeTrabajo ? (PRESENTISMO * sueldoBasico).toFixed(2) : '0.00'}</td>
+                </tr>
+                <tr>
+                    <td>Sueldo Bruto</td>
+                    <td></td>
+                    <td>${sueldoBruto.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>Descuento Jubilación</td>
+                    <td>11%</td>
+                    <td> - ${(sueldoBruto * APORTES.jubilacion).toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>Descuento Obra Social</td>
+                    <td>3%</td>
+                    <td> - ${(sueldoBruto * APORTES.obraSocial).toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td>Descuento Sindicato</td>
+                    <td>2%</td>
+                    <td> - ${(sueldoBruto * APORTES.sindicato).toFixed(2)}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr class="resumen">
+                    <td colspan="2">Total Neto a Cobrar</td>
+                    <td>${sueldoNeto.toFixed(2)}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <br>`;
+    document.getElementById("tablaRecibo").innerHTML += tablaHTML;
 }
+
+
 
 
 
