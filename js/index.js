@@ -20,6 +20,18 @@ segun lo corregiodo la entrega anterior modifique el  switch y realice una busqu
 /*corregimos lo indicado en la antrega anterior relacionado con intentosCategorias , manipulamos el DOM para generar la tabla del recibo de sueldo desde javascript, 
 eliminamos los "promp" por input y label,. guardamos informacion recopilada en el localstorage*/
 
+// carrusel.js
+
+const slides = document.querySelector(".slides");
+let index = 0;
+
+function avanzarCarrusel() {
+    index = (index + 1) % 4; // 4 imágenes
+    slides.style.transform = `translateX(-${index * 100}vw)`; // Usar "vw" para cada imagen ocupando el 100% del ancho de la pantalla
+}
+
+// Cambia la imagen cada 3 segundos
+setInterval(avanzarCarrusel, 3000);
 
 const ANTIGUEDAD = 0.01;
 const PRESENTISMO = 0.0833;

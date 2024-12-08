@@ -32,7 +32,14 @@
             <p>SIDEPRA es la organización que agrupa y defiende a los empleados del sector de pirulines en la República Argentina, velando por sus derechos laborales y económicos.</p>        
         </section>
         <section class="botones-contacto">
-            <img src="./asset/DALL·E-2024-10-02-21.356.jpg" alt="portada index">
+            <div class="carrusel">
+                <div class="slides">
+                    <img src="./asset/0.0.jpg" alt="portada 1">
+                    <img src="./asset/1.1.jpg" alt="portada 2">
+                    <img src="./asset/2.2.jpg" alt="portada 3">
+                    <img src="./asset/3.3.jpg" alt="portada 4">
+                </div>
+            </div>
             <a class="turno-whatsapp" href="#" target="_blank">
                 <button>MIRA NUESTROS <br> BENEFICIOS</button>
             </a>
@@ -44,12 +51,20 @@
             </a>
         </section>
         
-        <div id="cantidadEmpleadosSection">
-            <label for="cantidadEmpleados">¿Cuántos empleados deseas calcular?</label>
-            <input type="number" id="cantidadEmpleados" min="1" required>
-            <button id="iniciarCalculo">Iniciar Cálculo</button>
+        <div class="calculo-empleados">
+            <h2>Cálculo de Salarios: Gestiona a tu Equipo</h2>
+            <p>
+                Saber cuánto debes pagar a tus empleados es fundamental para cumplir con tus responsabilidades como empleador. 
+                Utiliza esta herramienta para calcular fácilmente los salarios de manera precisa y transparente.
+            </p>
+            <div id="cantidadEmpleadosSection">
+                <label for="cantidadEmpleados">¿Cuántos empleados deseas calcular?</label>
+                <input type="number" id="cantidadEmpleados" min="1" required>
+                <button id="iniciarCalculo">Iniciar Cálculo</button>
+            </div>
         </div>
-    
+
+    <div class="form-container">
         <form id="formEmpleado" style="display: none;">
             <label for="categoria">Categoría:</label>
             <select id="categoria">
@@ -64,7 +79,7 @@
             <input type="number" id="diasTrabajados" min="0" required>
             <button type="button" id="calcularSueldo">Calcular Sueldo</button>
         </form>
-    
+    </div>
         <div id="tablaRecibo"></div>
         
         
