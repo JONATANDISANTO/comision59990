@@ -26,11 +26,11 @@ const slides = document.querySelector(".slides");
 let index = 0;
 
 function avanzarCarrusel() {
-    index = (index + 1) % 4; // 4 imágenes
-    slides.style.transform = `translateX(-${index * 100}vw)`; // Usar "vw" para cada imagen ocupando el 100% del ancho de la pantalla
+    index = (index + 1) % 4;
+    slides.style.transform = `translateX(-${index * 100}vw)`; 
 }
 
-// Cambia la imagen cada 3 segundos
+
 setInterval(avanzarCarrusel, 3000);
 
 const ANTIGUEDAD = 0.01;

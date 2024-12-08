@@ -152,17 +152,17 @@ body {
     font-size: 1rem;
     border-radius: 50px; 
     text-decoration: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  /* Sombra para profundidad */
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;  /* Efecto de transición */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);  
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;  
     padding: 0 20px;
-    border: none;  /* Eliminar cualquier borde visible */
-    outline: none;  /* Eliminar cualquier contorno */
+    border: none;  
+    outline: none;  
 }
 
 .botones-contacto a:hover {
-    transform: translateY(-5px);  /* Efecto de elevación */
-    background: linear-gradient(45deg, #ff7c5c, #ff6f61);  /* Cambio de color en hover */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);  /* Efecto de sombra al pasar el mouse */
+    transform: translateY(-5px);  
+    background: linear-gradient(45deg, #ff7c5c, #ff6f61);  
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);  
 }
 
 .turno-whatsapp {
